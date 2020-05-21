@@ -10,48 +10,29 @@ class GildedRose(var items: Array<Item>) {
             if (legendaryItems.contains(items[i].name))
                 continue
             if (wellAgingItems.contains(items[i].name)) {
-                items[i].sellIn = items[i].sellIn - 1
+                items[i].sellIn -= 1
                 if (items[i].quality < 50) {
-                    items[i].quality = items[i].quality + 1
+                    items[i].quality += 1
+                }
+                continue
+            }
+            if (items[i].name.contains("Backstage passes")) {
+                items[i].sellIn -= 1
+                when {
+                    items[i].sellIn > 10 -> items[i].quality += 1
+                    items[i].sellIn in 6..10 -> items[i].quality += 2
+                    items[i].sellIn in 0..5 -> items[i].quality += 3
+                    else -> items[i].quality = 0
                 }
                 continue
             }
 
-            if (items[i].name != "Backstage passes to a TAFKAL80ETC concert") {
-                if (items[i].quality > 0) {
-                    items[i].quality = items[i].quality - 1
-                }
-            } else {
-                if (items[i].quality < 50) {
-                    items[i].quality = items[i].quality + 1
-
-                    if (items[i].name == "Backstage passes to a TAFKAL80ETC concert") {
-                        if (items[i].sellIn < 11) {
-                            if (items[i].quality < 50) {
-                                items[i].quality = items[i].quality + 1
-                            }
-                        }
-
-                        if (items[i].sellIn < 6) {
-                            if (items[i].quality < 50) {
-                                items[i].quality = items[i].quality + 1
-                            }
-                        }
-                    }
-                }
-            }
-
             items[i].sellIn = items[i].sellIn - 1
-            if (items[i].sellIn < 0) {
-
-                if (items[i].name != "Backstage passes to a TAFKAL80ETC concert") {
-                    if (items[i].quality > 0) {
-                        items[i].quality = items[i].quality - 1
-                    }
-                } else {
-                    items[i].quality = items[i].quality - items[i].quality
-                }
-
+            if (items[i].quality > 0) {
+                items[i].quality -= 1
+            }
+            if (items[i].sellIn < 0 && items[i].quality > 0) {
+                items[i].quality -= 1
             }
         }
     }
