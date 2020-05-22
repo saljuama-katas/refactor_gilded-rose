@@ -4,7 +4,7 @@ class GildedRose(var items: Array<Item>) {
 
     fun updateQuality() {
         items = items
-            .map { itemFactory(it) }
+            .map { detectItemType(it) }
             .map { it.updateQuality() }
             .toTypedArray()
     }
