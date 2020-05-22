@@ -14,6 +14,7 @@ fun itemFactory(item: Item): SmarterItem {
     fun isLegendaryItem(item: String) = listOf("Sulfuras, Hand of Ragnaros").contains(item)
     fun isWellAgingItem(item:String) = listOf("Aged Brie").contains(item)
     fun isBackstagePass(item:String) = item.contains("Backstage passes")
+    fun isConjuredItem(item:String) = item.contains("Conjured")
 
     if (isLegendaryItem(item.name))
         return LegendaryItem(item.name, item.sellIn, item.quality)
@@ -21,6 +22,8 @@ fun itemFactory(item: Item): SmarterItem {
         return WellAgingItem(item.name, item.sellIn, item.quality)
     if (isBackstagePass(item.name))
         return BackstagePassesItem(item.name, item.sellIn, item.quality)
+    if (isConjuredItem(item.name))
+        return ConjuredItem(item.name, item.sellIn, item.quality)
     return RegularItem(item.name, item.sellIn, item.quality)
 }
 
@@ -49,6 +52,16 @@ class RegularItem(val name: String, val sellIn: Int, val quality: Int) : Smarter
         var newQuality = quality
         if (quality > 0 ) newQuality -= 1
         if (sellIn - 1 < 0 && newQuality > 0 ) newQuality -= 1
+        return Item(name, sellIn - 1, newQuality)
+    }
+}
+
+class ConjuredItem(val name: String, val sellIn: Int, val quality: Int) : SmarterItem {
+    override fun updateQuality(): Item {
+        var newQuality = quality
+        if (quality > 0 ) newQuality -= 2
+        if (sellIn - 1 < 0 && newQuality > 0 ) newQuality -= 2
+        if (newQuality < 0 ) newQuality = 0
         return Item(name, sellIn - 1, newQuality)
     }
 }
