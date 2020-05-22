@@ -74,9 +74,24 @@ class GildedRoseTest : FreeSpec({
                 }
             }
 
+            "for conjured items" - {
+                "degrades quality by 2" {
+                    val inventory = GildedRose(arrayOf(Item("Conjured foo", 10, 10)))
+                    inventory.updateQuality()
+                    inventory.items.first().quality shouldBe 8
+                }
+                "degrades the quality by 4 when the sellIn is 0 or less" {
+                    val inventory = GildedRose(arrayOf(Item("Conjured foo", 0, 10)))
+                    inventory.updateQuality()
+                    inventory.items.first().quality shouldBe 6
+                }
+                "never degrades quality below 0" {
+                    val inventory = GildedRose(arrayOf(Item("Conjured foo", 0, 3)))
+                    inventory.updateQuality()
+                    inventory.items.first().quality shouldBe 0
+                }
+            }
         }
-
     }
-
 })
 
