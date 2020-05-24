@@ -25,7 +25,7 @@ fun main(args: Array<String>) {
     for (i in 0 until days) {
         println("-------- day $i --------")
         println("name, sellIn, quality")
-        items.forEach { println(it) }
+        app.items.forEach { println(it) }
         println()
         app.updateQuality()
     }
